@@ -48,6 +48,26 @@ class BarangkeluarController extends Controller
 
                     return $satuan;
                 })
+                ->addColumn('bk_density', function($row) {
+                    $bk_density = $row->bk_density == '' ? '-' : $row->bk_density;
+
+                    return $bk_density;
+                })
+                ->addColumn('bk_no_polisi', function($row) {
+                    $bk_no_polisi = $row->bk_no_polisi == '' ? '-' : $row->bk_no_polisi;
+
+                    return $bk_no_polisi;
+                })
+                ->addColumn('bk_surat_jalan', function($row) {
+                    $bk_surat_jalan = $row->bk_surat_jalan == '' ? '-' : $row->bk_surat_jalan;
+
+                    return $bk_surat_jalan;
+                })
+                ->addColumn('bk_jumlah_keluar_actual', function($row) {
+                    $bk_jumlah_keluar_actual = $row->bk_jumlah_keluar_actual == '' ? '-' : $row->bk_jumlah_keluar_actual;
+
+                    return $bk_jumlah_keluar_actual;
+                })
                 ->addColumn('action', function ($row) {
                     $array = array(
                         "bk_id" => $row->bk_id,
@@ -55,7 +75,11 @@ class BarangkeluarController extends Controller
                         "barang_kode" => $row->barang_kode,
                         "bk_tanggal" => $row->bk_tanggal,
                         "bk_tujuan" => trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $row->bk_tujuan)),
-                        "bk_jumlah" => $row->bk_jumlah
+                        "bk_jumlah" => $row->bk_jumlah,
+                        "bk_density" => $row->bk_density,
+                        "bk_no_polisi" => $row->bk_no_polisi,
+                        "bk_surat_jalan" => $row->bk_surat_jalan,
+                        "bk_jumlah_keluar_actual" => $row->bk_jumlah_keluar_actual,
                     );
                     $button = '';
                     $hakEdit = AksesModel::leftJoin('tbl_submenu', 'tbl_submenu.submenu_id', '=', 'tbl_akses.submenu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_submenu.submenu_judul' => 'Barang Keluar', 'tbl_akses.akses_type' => 'update'))->count();
@@ -63,20 +87,20 @@ class BarangkeluarController extends Controller
                     if ($hakEdit > 0 && $hakDelete > 0) {
                         $button .= '
                         <div class="g-2">
-                        <a class="btn modal-effect text-primary btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Umodaldemo8" data-bs-toggle="tooltip" data-bs-original-title="Edit" onclick=update(' . json_encode($array) . ')><span class="fe fe-edit text-success fs-14"></span></a>
-                        <a class="btn modal-effect text-danger btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Hmodaldemo8" onclick=hapus(' . json_encode($array) . ')><span class="fe fe-trash-2 fs-14"></span></a>
+                        <a class="btn modal-effect text-primary btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Umodaldemo8" data-bs-toggle="tooltip" data-bs-original-title="Edit" onclick="update(' . htmlspecialchars(json_encode($array), ENT_QUOTES, 'UTF-8') . ')"><span class="fe fe-edit text-success fs-14"></span></a>
+                        <a class="btn modal-effect text-danger btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Hmodaldemo8" onclick="hapus(' . htmlspecialchars(json_encode($array), ENT_QUOTES, 'UTF-8') . ')"><span class="fe fe-trash-2 fs-14"></span></a>
                         </div>
                         ';
                     } else if ($hakEdit > 0 && $hakDelete == 0) {
                         $button .= '
                         <div class="g-2">
-                            <a class="btn modal-effect text-primary btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Umodaldemo8" data-bs-toggle="tooltip" data-bs-original-title="Edit" onclick=update(' . json_encode($array) . ')><span class="fe fe-edit text-success fs-14"></span></a>
+                            <a class="btn modal-effect text-primary btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Umodaldemo8" data-bs-toggle="tooltip" data-bs-original-title="Edit" onclick="update(' . htmlspecialchars(json_encode($array), ENT_QUOTES, 'UTF-8') . ')"><span class="fe fe-edit text-success fs-14"></span></a>
                         </div>
                         ';
                     } else if ($hakEdit == 0 && $hakDelete > 0) {
                         $button .= '
                         <div class="g-2">
-                        <a class="btn modal-effect text-danger btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Hmodaldemo8" onclick=hapus(' . json_encode($array) . ')><span class="fe fe-trash-2 fs-14"></span></a>
+                        <a class="btn modal-effect text-danger btn-sm" data-bs-effect="effect-super-scaled" data-bs-toggle="modal" href="#Hmodaldemo8" onclick="hapus(' . htmlspecialchars(json_encode($array), ENT_QUOTES, 'UTF-8') . ')"><span class="fe fe-trash-2 fs-14"></span></a>
                         </div>
                         ';
                     } else {
@@ -84,7 +108,7 @@ class BarangkeluarController extends Controller
                     }
                     return $button;
                 })
-                ->rawColumns(['action', 'tgl', 'tujuan', 'barang', 'satuan'])->make(true);
+                ->rawColumns(['action', 'tgl', 'tujuan', 'barang', 'satuan',  'bk_density', 'bk_no_polisi', 'bk_surat_jalan', 'bk_jumlah_keluar_actual'])->make(true);
         }
     }
 
@@ -98,6 +122,10 @@ class BarangkeluarController extends Controller
             'barang_kode' => $request->barang,
             'bk_tujuan'   => $request->tujuan,
             'bk_jumlah'   => $request->jml,
+            'bk_density' => $request->density,
+            'bk_no_polisi' => $request->noPolisi,
+            'bk_surat_jalan' => $request->suratJalan,
+            'bk_jumlah_keluar_actual' => $request->jumlahKeluarActual
         ]);
 
         return response()->json(['success' => 'Berhasil']);
@@ -112,6 +140,10 @@ class BarangkeluarController extends Controller
             'barang_kode' => $request->barang,
             'bk_tujuan'   => $request->tujuan,
             'bk_jumlah'   => $request->jml,
+            "bk_density" => $request->density,
+            "bk_no_polisi" => $request->noPolisi,
+            "bk_surat_jalan" => $request->suratJalan,
+            "bk_jumlah_masuk_actual" => $request->jumlahKeluarActual,
         ]);
 
         return response()->json(['success' => 'Berhasil']);

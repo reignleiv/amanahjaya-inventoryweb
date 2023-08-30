@@ -69,6 +69,11 @@
             $("input[name='kdbarangU']").val(data.barang_kode);
             $("input[name='jmlU']").val(data.bk_jumlah);
             $("input[name='tujuanU']").val(data.bk_tujuan.replace(/_/g, ' '));
+            $("input[name='jumlahKeluarU']").val(data.bk_jumlah);
+            $("input[name='densityU']").val(data.bk_density);
+            $("input[name='noPolisiU']").val(data.bk_no_polisi);
+            $("input[name='suratJalanU']").val(data.bk_surat_jalan);
+            $("input[name='jumlahKeluarActualU']").val(data.bk_jumlah_keluar_actual);
 
             getbarangbyidU(data.barang_kode);
 

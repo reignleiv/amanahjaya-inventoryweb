@@ -21,7 +21,7 @@
                         </div>
                         <div class="form-group">
                             <label for="jamsk" class="form-label">Jam Masuk<span class="text-danger">*</span></label>
-                            <input type="text" name="jamsk" class="form-control" placeholder="" id="jamsk">
+                            <input type="time" name="jamsk" class="form-control" placeholder="" id="jamsk">
                         </div>
                         <div class="form-group">
                             <label for="customer" class="form-label">Pilih Customer <span
@@ -34,17 +34,13 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="density" class="form-label">Density<span class="text-danger">*</span></label>
-                            <input type="text" name="density" class="form-control" placeholder="" id="density">
-                        </div>
-                        <div class="form-group">
                             <label for="nopol" class="form-label">No Polisi<span class="text-danger">*</span></label>
-                            <input type="text" name="nopol" class="form-control" placeholder="" id="nopol">
+                            <input type="text" name="noPolisi" class="form-control" placeholder="" id="nopol">
                         </div>
                         <div class="form-group">
                             <label for="suratjalan" class="form-label">Surat Jalan<span
                                     class="text-danger">*</span></label>
-                            <input type="text" name="density" class="form-control" placeholder="" id="suratjalan">
+                            <input type="text" name="suratJalan" class="form-control" placeholder="" id="suratjalan">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -82,12 +78,28 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="density" class="form-label">Density<span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" name="density" class="form-control" placeholder=""
+                                        id="density">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="jumlahMasuk" class="form-label">Jumlah Masuk<span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" name="jumlahMasuk" class="form-control" placeholder=""
+                                        id="jumlahMasuk">
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
-                            <label for="jml" class="form-label">Jumlah Masuk <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" name="jml" value="0" class="form-control"
-                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');"
-                                placeholder="">
+                            <label for="jml" class="form-label">Jumlah Masuk Actual</label>
+                            <input type="number" name="jumlahMasukActual" value="0" class="form-control"
+                                placeholder="" id="jumlahMasukActual" readonly>
                         </div>
                     </div>
                 </div>
@@ -195,7 +207,13 @@
             const tglmasuk = $("input[name='tglmasuk']").val();
             const kdbarang = $("input[name='kdbarang']").val();
             const customer = $("select[name='customer']").val();
-            const jml = $("input[name='jml']").val();
+            const jumlahMasuk = +$("input[name='jumlahMasuk']").val();
+            const density = +$("input[name='density']").val();
+            const noPolisi = $("input[name='noPolisi']").val();
+            const suratJalan = $("input[name='suratJalan']").val();
+            const jumlahMasukActual = parseFloat($("input[name='jumlahMasukActual']").val());
+
+            console.log(bmkode,tglmasuk,kdbarang,customer,jumlahMasuk,density,noPolisi,suratJalan,jumlahMasukActual);
 
             $.ajax({
                 type: 'POST',
@@ -206,7 +224,11 @@
                     tglmasuk: tglmasuk,
                     barang: kdbarang,
                     customer: customer,
-                    jml: jml
+                    jml: jumlahMasuk,
+                    density: density,
+                    noPolisi: noPolisi,
+                    suratJalan: suratJalan,
+                    jumlahMasuk: jumlahMasukActual
                 },
                 success: function(data) {
                     $('#modaldemo8').modal('toggle');
@@ -216,7 +238,15 @@
                     });
                     table.ajax.reload(null, false);
                     reset();
-
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors here
+                    console.error("AJAX Error:", error, status, xhr);
+                    swal({
+                        title: "Error",
+                        text: "An error occurred while submitting the form.",
+                        type: "error"
+                    });
                 }
             });
         }
@@ -251,5 +281,18 @@
                 $('#btnLoader').addClass('d-none');
             }
         }
+
+        // Event handlers for input fields
+        $('#jumlahMasuk, #density').on('keyup change', function() {
+            // Get values from input fields
+            var jumlahMasuk = parseFloat($('#jumlahMasuk').val());
+            var density = parseFloat($('#density').val());
+
+            // Calculate density (assuming nopol length > 0)
+            var jumlahMasukActual = jumlahMasuk / density;
+
+            // Update the value of jumlahMasukActual
+            $('#jumlahMasukActual').val(jumlahMasukActual.toFixed(2));
+        });
     </script>
 @endsection

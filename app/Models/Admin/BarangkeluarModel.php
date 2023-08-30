@@ -16,5 +16,9 @@ class BarangkeluarModel extends Model
         'bk_tanggal',
         'bk_tujuan',
         'bk_jumlah',
+        'bk_density',
+        'bk_no_polisi',
+        'bk_surat_jalan',
+        'bk_jumlah_keluar_actual'
     ]; 
 }

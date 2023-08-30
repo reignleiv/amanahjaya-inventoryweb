@@ -21,6 +21,16 @@
                             <label for="tujuanU" class="form-label">Tujuan</label>
                             <input type="text" name="tujuanU" class="form-control" placeholder="">
                         </div>
+                        <div class="form-group">
+                            <label for="nopol" class="form-label">No Polisi<span class="text-danger">*</span></label>
+                            <input type="text" name="noPolisiU" class="form-control" placeholder="" id="nopol">
+                        </div>
+                        <div class="form-group">
+                            <label for="suratjalan" class="form-label">Surat Jalan<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" name="suratJalanU" class="form-control" placeholder=""
+                                id="suratjalan">
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -54,9 +64,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="jmlU" class="form-label">Jumlah Keluar <span class="text-danger">*</span></label>
                             <input type="text" name="jmlU" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" placeholder="">
+                        </div> --}}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="density" class="form-label">Density<span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" name="densityU" class="form-control" placeholder=""
+                                        id="densityU">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="jumlahMasuk" class="form-label">Jumlah Keluar<span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" name="jumlahKeluarU" class="form-control" placeholder=""
+                                        id="jumlahKeluarU">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="jml" class="form-label">Jumlah Keluar Actual</label>
+                            <input type="number" name="jumlahKeluarActualU" value="0" class="form-control"
+                                placeholder="" id="jumlahKeluarActualU" readonly>
                         </div>
                     </div>
                 </div>
@@ -129,6 +162,7 @@
         const kdbarang = $("input[name='kdbarangU").val();
         const tujuan = $("input[name='tujuanU']").val();
         const jml = $("input[name='jmlU']").val();
+        
         setLoadingU(true);
         resetValidU();
 
@@ -158,7 +192,11 @@
         const tglkeluar = $("input[name='tglkeluarU']").val();
         const kdbarang = $("input[name='kdbarangU']").val();
         const tujuan = $("input[name='tujuanU']").val();
-        const jml = $("input[name='jmlU']").val();
+        const jumlahKeluar = $("input[name='jumlahKeluarU']").val();
+        const density = +$("input[name='densityU']").val();
+        const noPolisi = $("input[name='noPolisiU']").val();
+        const suratJalan = $("input[name='suratJalanU']").val();
+        const jumlahKeluarActual = parseFloat($("input[name='jumlahKeluarActualU']").val());
 
         $.ajax({
             type: 'POST',
@@ -169,7 +207,11 @@
                 tglkeluar: tglkeluar,
                 barang: kdbarang,
                 tujuan: tujuan,
-                jml: jml
+                jml: jumlahKeluar,
+                density: density,
+                noPolisi: noPolisi,
+                suratJalan: suratJalan,
+                jumlahKeluarActual: jumlahKeluarActual
             },
             success: function(data) {
                 swal({
@@ -179,6 +221,15 @@
                 $('#Umodaldemo8').modal('toggle');
                 table.ajax.reload(null, false);
                 resetU();
+            },
+            error: function(xhr, status, error) {
+                // Handle errors here
+                console.error("AJAX Error:", error, status, xhr);
+                swal({
+                    title: "Error",
+                    text: "An error occurred while submitting the form.",
+                    type: "error"
+                });
             }
         });
     }
@@ -214,5 +265,18 @@
             $('#btnLoaderU').addClass('d-none');
         }
     }
+
+    // Event handlers for input fields
+    $('#jumlahKeluarU, #densityU').on('keyup change', function() {
+            // Get values from input fields
+            var jumlahKeluar = parseFloat($('#jumlahKeluarU').val());
+            var density = parseFloat($('#densityU').val());
+
+            // Calculate density (assuming nopol length > 0)
+            var jumlahKeluarActual = jumlahKeluar / density;
+
+            // Update the value of jumlahMasukActual
+            $('#jumlahKeluarActualU').val(jumlahKeluarActual.toFixed(2));
+        });
 </script>
 @endsection

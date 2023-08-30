@@ -66,7 +66,11 @@
         $("input[name='bmkodeU']").val(data.bm_kode);
         $("input[name='kdbarangU']").val(data.barang_kode);
         $("select[name='customerU']").val(data.customer_id);
-        $("input[name='jmlU']").val(data.bm_jumlah);
+        $("input[name='jumlahMasukU']").val(data.bm_jumlah);
+        $("input[name='densityU']").val(data.bm_density);
+        $("input[name='noPolisiU']").val(data.bm_no_polisi);
+        $("input[name='suratJalanU']").val(data.bm_surat_jalan);
+        $("input[name='jumlahMasukActualU']").val(data.bm_jumlah_masuk_actual);
 
         getbarangbyidU(data.barang_kode);
 
@@ -74,6 +78,7 @@
             format: 'yyyy-mm-dd',
             autoclose: true
         }).bootstrapdatepicker("update", data.bm_tanggal);
+        console.log(data);
     }
 
     function hapus(data) {

@@ -16,5 +16,9 @@ class BarangmasukModel extends Model
         'customer_id',
         'bm_tanggal',
         'bm_jumlah',
+        'bm_density',
+        'bm_no_polisi',
+        'bm_surat_jalan',
+        'bm_jumlah_masuk_actual'
     ];
 }
