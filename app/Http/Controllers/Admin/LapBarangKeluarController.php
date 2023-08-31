@@ -62,7 +62,7 @@ class LapBarangKeluarController extends Controller
             if ($request->tglawal == '') {
                 $data = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->leftJoin('tbl_satuan', 'tbl_satuan.satuan_id', '=', 'tbl_barang.satuan_id')->orderBy('bk_id', 'DESC')->get();
             } else {
-                $data = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->leftJoin('tbl_satuan', 'tbl_satuan.satuan_id', '=', 'tbl_barang.satuan_id')->whereBetween('bk_tanggal', [$request->tglawal, $request->tglakhir])->orderBy('bk_id', 'DESC')->get();
+                $data = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_baran`g.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->leftJoin('tbl_satuan', 'tbl_satuan.satuan_id', '=', 'tbl_barang.satuan_id')->whereBetween('bk_tanggal', [$request->tglawal, $request->tglakhir])->orderBy('bk_id', 'DESC')->get();
             }
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -71,7 +71,7 @@ class LapBarangKeluarController extends Controller
 
                     return $tgl;
                 })
-                
+
                 ->addColumn('barang', function ($row) {
                     $barang = $row->barang_id == '' ? '-' : $row->barang_nama;
 

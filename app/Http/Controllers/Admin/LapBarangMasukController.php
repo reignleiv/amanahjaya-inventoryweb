@@ -53,6 +53,28 @@ class LapBarangMasukController extends Controller
             return $pdf->download('lap-bm-semua-tanggal.pdf');
         }
     }
+    //Function untuk excel
+    public function excel(Request $request)
+    {
+        if ($request->tglawal) {
+            $data['data'] = BarangmasukModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangmasuk.barang_kode')->leftJoin('tbl_supplier', 'tbl_supplier.customer_id', '=', 'tbl_barangmasuk.customer_id')->whereBetween('bm_tanggal', [$request->tglawal, $request->tglakhir])->orderBy('bm_id', 'DESC')->get();
+        } else {
+            $data['data'] = BarangmasukModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangmasuk.barang_kode')->leftJoin('tbl_supplier', 'tbl_supplier.customer_id', '=', 'tbl_barangmasuk.customer_id')->orderBy('bm_id', 'DESC')->get();
+        }
+
+        $data["title"] = "Excel Barang Masuk";
+        $data['web'] = WebModel::first();
+        $data['tglawal'] = $request->tglawal;
+        $data['tglakhir'] = $request->tglakhir;
+        $pdf = PDF::loadView('Admin.Laporan.BarangMasuk.xls', $data);
+
+        if ($request->tglawal) {
+            return $pdf->download('lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xls');
+        } else {
+            return $pdf->download('lap-bm-semua-tanggal.pdf');
+        }
+    }
+    //end
 
     public function show(Request $request)
     {

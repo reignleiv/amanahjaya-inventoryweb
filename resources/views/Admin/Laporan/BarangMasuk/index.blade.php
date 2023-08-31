@@ -59,6 +59,7 @@
                                 <th class="border-bottom-0">Customer</th>
                                 <th class="border-bottom-0">Barang</th>
                                 <th class="border-bottom-0">Jumlah Masuk</th>
+                                <th class="border-bottom-0">Jumlah Masuk Actual</th>
                                 <th class="border-bottom-0">Satuan</th>
                             </thead>
                             <tbody></tbody>
@@ -118,14 +119,6 @@
                         data: 'tgl',
                         name: 'bm_tanggal',
                     },
-                    // {
-                    //     data: 'bm_kode',
-                    //     name: 'bm_kode',
-                    // },
-                    // {
-                    //     data: 'barang_kode',
-                    //     name: 'barang_kode',
-                    // },
                     {
                         data: 'customer',
                         name: 'customer_nama',
@@ -137,6 +130,10 @@
                     {
                         data: 'bm_jumlah',
                         name: 'bm_jumlah',
+                    },
+                    {
+                        data: 'bm_jumlah_masuk_actual',
+                        name: 'bm_jumlah_masuk_actual',
                     },
                     {
                         data: 'satuan',

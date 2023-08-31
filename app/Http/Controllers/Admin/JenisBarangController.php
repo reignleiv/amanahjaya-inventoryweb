@@ -97,11 +97,10 @@ class JenisBarangController extends Controller
 
     public function proses_hapus(Request $request, JenisBarangModel $jenisbarang)
     {
-        
+
         //delete
         $jenisbarang->delete();
 
         return response()->json(['success' => 'Berhasil']);
     }
-
 }
