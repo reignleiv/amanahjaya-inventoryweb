@@ -35,11 +35,12 @@
                             <thead>
                                 <th class="border-bottom-0" width="1%">No</th>
                                 <th class="border-bottom-0">Tanggal Keluar</th>
+                                <th class="border-bottom-0">No Polisi</th>
+                                <th class="border-bottom-0">No Surat Jalan</th>
                                 <th class="border-bottom-0">Barang</th>
                                 <th class="border-bottom-0">Jumlah Keluar</th>
                                 <th class="border-bottom-0">Jumlah Keluar Actual</th>
                                 <th class="border-bottom-0">Satuan</th>
-
                                 <th class="border-bottom-0" width="1%">Action</th>
                             </thead>
                             <tbody></tbody>
@@ -136,6 +137,14 @@
                     {
                         data: 'tgl',
                         name: 'bk_tanggal',
+                    },
+                    {
+                        data: 'bk_surat_jalan',
+                        name: 'bk_surat_jalan',
+                    },
+                    {
+                        data: 'bk_no_polisi',
+                        name: 'bk_no_polisi',
                     },
                     {
                         data: 'barang',

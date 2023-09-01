@@ -54,10 +54,9 @@
                             <thead>
                                 <th class="border-bottom-0" width="1%">No</th>
                                 <th class="border-bottom-0">Tanggal Keluar</th>
-                                <th class="border-bottom-0">Kode Barang Keluar</th>
-                                <th class="border-bottom-0">Kode Barang</th>
                                 <th class="border-bottom-0">Barang</th>
                                 <th class="border-bottom-0">Jumlah Keluar</th>
+                                <th class="border-bottom-0">Jumlah Keluar Actual</th>
                                 <th class="border-bottom-0">Satuan</th>
                             </thead>
                             <tbody></tbody>
@@ -118,20 +117,16 @@
                         name: 'bk_tanggal',
                     },
                     {
-                        data: 'bk_kode',
-                        name: 'bk_kode',
-                    },
-                    {
-                        data: 'barang_kode',
-                        name: 'barang_kode',
-                    },
-                    {
                         data: 'barang',
                         name: 'barang_nama',
                     },
                     {
                         data: 'bk_jumlah',
                         name: 'bk_jumlah',
+                    },
+                    {
+                        data: 'bk_jumlah_keluar_actual',
+                        name: 'bk_jumlah_keluar_actual',
                     },
                     {
                         data: 'satuan',

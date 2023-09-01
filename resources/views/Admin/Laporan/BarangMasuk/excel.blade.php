@@ -15,13 +15,6 @@ use Carbon\Carbon;
     <meta name="keywords" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <!-- FAVICON -->
-    @if ($web->web_logo == '' || $web->web_logo == 'default.png')
-        <link rel="shortcut icon" type="image/x-icon" href="{{ url('/assets/default/web/default.png') }}" />
-    @else
-        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('storage/web/' . $web->web_logo) }}" />
-    @endif
-
     <title>{{ $title }}</title>
 
     <style>
@@ -69,15 +62,7 @@ use Carbon\Carbon;
 
 </head>
 
-<body onload="window.print()">
-
-    <center>
-        @if ($web->web_logo == '' || $web->web_logo == 'default.png')
-            <img src="{{ url('/assets/default/web/default.png') }}" width="80px" alt="">
-        @else
-            <img src="{{ url('/assets/default/web/default.png') }}" width="80px" alt="">
-        @endif
-    </center>
+<body>
 
     <center>
         <h1 class="font-medium">Laporan Barang Masuk</h1>

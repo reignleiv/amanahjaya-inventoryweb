@@ -7,6 +7,7 @@ use App\Models\Admin\AksesModel;
 use App\Models\Admin\BarangkeluarModel;
 use App\Models\Admin\BarangModel;
 use App\Models\Admin\SatuanModel;
+use App\Models\Admin\CustomerModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -19,6 +20,7 @@ class BarangkeluarController extends Controller
         $data["title"] = "Barang Keluar";
         $data["hakTambah"] = AksesModel::leftJoin('tbl_submenu', 'tbl_submenu.submenu_id', '=', 'tbl_akses.submenu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_submenu.submenu_judul' => 'Barang Keluar', 'tbl_akses.akses_type' => 'create'))->count();
         $data["satuan"] =  SatuanModel::orderBy('satuan_id', 'DESC')->get();
+        $data["customer"] = CustomerModel::orderBy('customer_id', 'DESC')->get();
         return view('Admin.BarangKeluar.index', $data);
     }
 
@@ -48,22 +50,22 @@ class BarangkeluarController extends Controller
 
                     return $satuan;
                 })
-                ->addColumn('bk_density', function($row) {
+                ->addColumn('bk_density', function ($row) {
                     $bk_density = $row->bk_density == '' ? '-' : $row->bk_density;
 
                     return $bk_density;
                 })
-                ->addColumn('bk_no_polisi', function($row) {
+                ->addColumn('bk_no_polisi', function ($row) {
                     $bk_no_polisi = $row->bk_no_polisi == '' ? '-' : $row->bk_no_polisi;
 
                     return $bk_no_polisi;
                 })
-                ->addColumn('bk_surat_jalan', function($row) {
+                ->addColumn('bk_surat_jalan', function ($row) {
                     $bk_surat_jalan = $row->bk_surat_jalan == '' ? '-' : $row->bk_surat_jalan;
 
                     return $bk_surat_jalan;
                 })
-                ->addColumn('bk_jumlah_keluar_actual', function($row) {
+                ->addColumn('bk_jumlah_keluar_actual', function ($row) {
                     $bk_jumlah_keluar_actual = $row->bk_jumlah_keluar_actual == '' ? '-' : $row->bk_jumlah_keluar_actual;
 
                     return $bk_jumlah_keluar_actual;
