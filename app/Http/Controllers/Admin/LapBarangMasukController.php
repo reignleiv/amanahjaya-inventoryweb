@@ -59,34 +59,10 @@ class LapBarangMasukController extends Controller
     //Function untuk excel
     public function excel(Request $request)
     {
-        // Check if both start and end dates are provided in the request
-        if ($request->tglawal && $request->tglakhir) {
-            $data['data'] = BarangmasukModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangmasuk.barang_kode')
-            ->leftJoin('tbl_supplier', 'tbl_supplier.customer_id', '=', 'tbl_barangmasuk.customer_id')
-            ->whereBetween('bm_tanggal', [$request->tglawal, $request->tglakhir])
-                ->orderBy('bm_id', 'DESC')
-                ->get();
+        $from_date = $request->tglawal;
+        $to_date = $request->tglakhir;
 
-            // Define a file name based on date range
-            $fileName = 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx';
-        } else {
-            // If no date range is specified, export all data
-            $data['data'] = BarangmasukModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangmasuk.barang_kode')
-            ->leftJoin('tbl_supplier', 'tbl_supplier.customer_id', '=', 'tbl_barangmasuk.customer_id')
-            ->orderBy('bm_id', 'DESC')
-            ->get();
-
-            // Define a file name for all dates
-            $fileName = 'lap-bm-semua-tanggal.xlsx';
-        }
-
-        $data["title"] = "Excel Barang Masuk";
-        $data['web'] = WebModel::first();
-        $data['tglawal'] = $request->tglawal;
-        $data['tglakhir'] = $request->tglakhir;
-
-        // Use the defined file name for Excel export
-        return Excel::download(new BarangMasukExport($data['data']), $fileName);
+        return Excel::download(new BarangMasukExport($from_date, $to_date), 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
     }
 
     //end

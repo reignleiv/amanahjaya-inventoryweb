@@ -9,7 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\Admin\SatuanModel;
+use App\Exports\BarangKeluarExport;
 use PDF;
+use Excel;
 
 class LapBarangKeluarController extends Controller
 {
@@ -28,7 +30,7 @@ class LapBarangKeluarController extends Controller
             $data['data'] = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->orderBy('bk_id', 'DESC')->get();
         }
 
-        $data["title"] = "Print Barang Masuk";
+        $data["title"] = "Print Barang Keluar";
         $data['web'] = WebModel::first();
         $data['tglawal'] = $request->tglawal;
         $data['tglakhir'] = $request->tglakhir;
@@ -43,7 +45,7 @@ class LapBarangKeluarController extends Controller
             $data['data'] = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->leftJoin('tbl_satuan', 'tbl_satuan.satuan_id', '=', 'tbl_barang.satuan_id')->orderBy('bk_id', 'DESC')->get();
         }
 
-        $data["title"] = "PDF Barang Masuk";
+        $data["title"] = "PDF Barang Keluar";
         $data['web'] = WebModel::first();
         $data['tglawal'] = $request->tglawal;
         $data['tglakhir'] = $request->tglakhir;
@@ -55,7 +57,35 @@ class LapBarangKeluarController extends Controller
             return $pdf->download('lap-bk-semua-tanggal.pdf');
         }
     }
+    public function excel(Request $request)
+    {
+        // Check if both start and end dates are provided in the request
+        if ($request->tglawal && $request->tglakhir) {
+            $data['data'] = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
+                ->whereBetween('bk_tanggal', [$request->tglawal, $request->tglakhir])
+                ->orderBy('bk_id', 'DESC')
+                ->get();
 
+            // Define a file name based on date range
+            $fileName = 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx';
+        } else {
+            // If no date range is specified, export all data
+            $data['data'] = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
+                ->orderBy('bk_id', 'DESC')
+                ->get();
+
+            // Define a file name for all dates
+            $fileName = 'lap-bk-semua-tanggal.xlsx';
+        }
+
+        $data["title"] = "Excel Barang Keluar";
+        $data['web'] = WebModel::first();
+        $data['tglawal'] = $request->tglawal;
+        $data['tglakhir'] = $request->tglakhir;
+
+        // Use the defined file name for Excel export
+        return Excel::download(new BarangKeluarExport($data['data']), $fileName);
+    }
     public function show(Request $request)
     {
         if ($request->ajax()) {
