@@ -56,7 +56,7 @@
                             <thead>
                                 <th class="border-bottom-0" width="1%">No</th>
                                 <th class="border-bottom-0">Tanggal Masuk</th>
-                                <th class="border-bottom-0">Customer</th>
+                                <th class="border-bottom-0">Supplier</th>
                                 <th class="border-bottom-0">Barang</th>
                                 <th class="border-bottom-0">Jumlah Masuk</th>
                                 <th class="border-bottom-0">Jumlah Masuk Actual</th>

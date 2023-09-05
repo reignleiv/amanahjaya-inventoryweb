@@ -21,6 +21,7 @@ class BarangMasukExport implements FromQuery, WithHeadings, ShouldAutoSize
 
     protected $tglawal;
     protected $tglakhir;
+
     public function __construct($tglawal, $tglakhir)
     {
         $this->tglawal = $tglawal;
@@ -28,10 +29,14 @@ class BarangMasukExport implements FromQuery, WithHeadings, ShouldAutoSize
     }
     public function headings(): array
     {
-        return ["Id", "Kode Barang Masuk", "Kode Barang", "Supplier", "Tanggal Masuk", "Jumlah Barang Masuk", "Density", "Nomor Polisi", "Nomor Surat Jalan", "Jumlah Masuk Actual"];
+        return ["Id", "Kode Barang Masuk", "Kode Barang", "Supplier", "Tanggal Masuk", "Jumlah Barang Masuk", "Density", "Nomor Polisi", "Nomor Surat Jalan", "Keterangan", "Jumlah Masuk Actual"];
     }
     public function query()
     {
-        return BarangmasukModel::query();
+        if (is_null($this->tglawal) || is_null($this->tglakhir)) {
+            return BarangmasukModel::query();
+        } else {
+            return BarangmasukModel::query()->whereBetween('bm_tanggal', [$this->tglawal, $this->tglakhir]);
+        }
     }
 }

@@ -56,16 +56,23 @@ class LapBarangMasukController extends Controller
             return $pdf->download('lap-bm-semua-tanggal.pdf');
         }
     }
-    //Function untuk excel
     public function excel(Request $request)
     {
-        $from_date = $request->tglawal;
-        $to_date = $request->tglakhir;
+        $from_date = null;
+        $to_date = null;
 
-        return Excel::download(new BarangMasukExport($from_date, $to_date), 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
+
+        if ($request->filled(['tglawal', 'tglakhir'])) {
+            $from_date = $request->tglawal;
+            $to_date = $request->tglakhir;
+        }
+
+        if (is_null($from_date) || is_null($to_date)) {
+            return Excel::download(new BarangMasukExport($from_date, $to_date), 'lap-bm-' . date('Y-m-d') . '.xlsx');
+        } else {
+            return Excel::download(new BarangMasukExport($from_date, $to_date), 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
+        }
     }
-
-    //end
 
     public function show(Request $request)
     {
@@ -79,26 +86,20 @@ class LapBarangMasukController extends Controller
                 ->addIndexColumn()
                 ->addColumn('tgl', function ($row) {
                     $tgl = $row->bm_tanggal == '' ? '-' : Carbon::parse($row->bm_tanggal)->translatedFormat('d F Y');
-
                     return $tgl;
                 })
                 ->addColumn('customer', function ($row) {
                     $customer = $row->customer_id == '' ? '-' : $row->customer_nama;
-
                     return $customer;
                 })
                 ->addColumn('barang', function ($row) {
                     $barang = $row->barang_id == '' ? '-' : $row->barang_nama;
-
                     return $barang;
                 })
                 ->addColumn('satuan', function ($row) {
                     $satuan = $row->satuan_id == '' ? '-' : $row->satuan_nama;
-
                     return $satuan;
                 })
-
-
                 ->rawColumns(['tgl', 'customer', 'barang', 'satuan'])->make(true);
         }
     }

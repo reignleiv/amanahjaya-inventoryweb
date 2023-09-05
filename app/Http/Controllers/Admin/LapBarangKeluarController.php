@@ -59,40 +59,29 @@ class LapBarangKeluarController extends Controller
     }
     public function excel(Request $request)
     {
-        // Check if both start and end dates are provided in the request
-        if ($request->tglawal && $request->tglakhir) {
-            $data['data'] = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
-                ->whereBetween('bk_tanggal', [$request->tglawal, $request->tglakhir])
-                ->orderBy('bk_id', 'DESC')
-                ->get();
+        $from_date = null;
+        $to_date = null;
 
-            // Define a file name based on date range
-            $fileName = 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx';
-        } else {
-            // If no date range is specified, export all data
-            $data['data'] = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
-                ->orderBy('bk_id', 'DESC')
-                ->get();
 
-            // Define a file name for all dates
-            $fileName = 'lap-bk-semua-tanggal.xlsx';
+        if ($request->filled(['tglawal', 'tglakhir'])) {
+            $from_date = $request->tglawal;
+            $to_date = $request->tglakhir;
         }
 
-        $data["title"] = "Excel Barang Keluar";
-        $data['web'] = WebModel::first();
-        $data['tglawal'] = $request->tglawal;
-        $data['tglakhir'] = $request->tglakhir;
-
-        // Use the defined file name for Excel export
-        return Excel::download(new BarangKeluarExport($data['data']), $fileName);
+        if (is_null($from_date) || is_null($to_date)) {
+            return Excel::download(new BarangKeluarExport($from_date, $to_date), 'lap-bk-' . date('Y-m-d') . '.xlsx');
+        } else {
+            return Excel::download(new BarangKeluarExport($from_date, $to_date), 'lap-bk-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
+        }
     }
+    
     public function show(Request $request)
     {
         if ($request->ajax()) {
             if ($request->tglawal == '') {
                 $data = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->leftJoin('tbl_satuan', 'tbl_satuan.satuan_id', '=', 'tbl_barang.satuan_id')->orderBy('bk_id', 'DESC')->get();
             } else {
-                $data = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_baran`g.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->leftJoin('tbl_satuan', 'tbl_satuan.satuan_id', '=', 'tbl_barang.satuan_id')->whereBetween('bk_tanggal', [$request->tglawal, $request->tglakhir])->orderBy('bk_id', 'DESC')->get();
+                $data = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')->leftJoin('tbl_satuan', 'tbl_satuan.satuan_id', '=', 'tbl_barang.satuan_id')->whereBetween('bk_tanggal', [$request->tglawal, $request->tglakhir])->orderBy('bk_id', 'DESC')->get();
             }
             return DataTables::of($data)
                 ->addIndexColumn()

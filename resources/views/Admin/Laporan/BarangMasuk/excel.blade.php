@@ -82,7 +82,7 @@ use Carbon\Carbon;
                 <th>TGL MASUK</th>
                 <th>KODE BRG MASUK</th>
                 <th>KODE BARANG</th>
-                <th>CUSTOMER</th>
+                <th>CUSTOMER</th> 
                 <th>BARANG</th>
                 <th>JML MASUK</th>
             </tr>
