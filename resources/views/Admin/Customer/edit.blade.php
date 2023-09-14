@@ -60,7 +60,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ url('admin/customer/proses_ubah') }}/" + id,
+                url: "{{ url('admin/supplier/proses_ubah') }}/" + id,
                 enctype: 'multipart/form-data',
                 data: {
                     customer: customer,

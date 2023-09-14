@@ -3,7 +3,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content modal-content-demo">
             <div class="modal-body text-center p-4 pb-5">
-                <button type="reset" aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal"><span aria-hidden="true">×</span></button>
+                <button type="reset" aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal"><span
+                        aria-hidden="true">×</span></button>
                 <br>
                 <i class="icon icon-exclamation fs-70 text-warning lh-1 my-5 d-inline-block"></i>
                 <h3 class="mb-5">Yakin hapus <span id="vcustomer"></span> ?</h3>
@@ -20,40 +21,40 @@
 </div>
 
 @section('formHapusJS')
-<script>
-    function submitFormH() {
-        setLoadingH(true);
-        const id = $("input[name='idcustomer']").val();
+    <script>
+        function submitFormH() {
+            setLoadingH(true);
+            const id = $("input[name='idcustomer']").val();
 
-        $.ajax({
-            type: 'POST',
-            url: "{{url('admin/customer/proses_hapus')}}/" + id,
-            enctype: 'multipart/form-data',
-            success: function(data) {
-                swal({
-                    title: "Berhasil dihapus!",
-                    type: "success"
-                });
-                $('#Hmodaldemo8').modal('toggle');
-                table.ajax.reload(null, false);
-                resetH();
-            }
-        });
-    }
-
-    function resetH() {
-        $("input[name='idcustomer']").val('');
-        setLoadingH(false);
-    }
-
-    function setLoadingH(bool) {
-        if (bool == true) {
-            $('#btnLoaderH').removeClass('d-none');
-            $('#btnSubmit').addClass('d-none');
-        } else {
-            $('#btnSubmit').removeClass('d-none');
-            $('#btnLoaderH').addClass('d-none');
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('admin/supplier/proses_hapus') }}/" + id,
+                enctype: 'multipart/form-data',
+                success: function(data) {
+                    swal({
+                        title: "Berhasil dihapus!",
+                        type: "success"
+                    });
+                    $('#Hmodaldemo8').modal('toggle');
+                    table.ajax.reload(null, false);
+                    resetH();
+                }
+            });
         }
-    }
-</script>
+
+        function resetH() {
+            $("input[name='idcustomer']").val('');
+            setLoadingH(false);
+        }
+
+        function setLoadingH(bool) {
+            if (bool == true) {
+                $('#btnLoaderH').removeClass('d-none');
+                $('#btnSubmit').addClass('d-none');
+            } else {
+                $('#btnSubmit').removeClass('d-none');
+                $('#btnLoaderH').addClass('d-none');
+            }
+        }
+    </script>
 @endsection
