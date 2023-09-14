@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\BarangkeluarModel;
 use App\Models\Admin\BarangmasukModel;
+use App\Exports\BarangStokExport;
 use App\Models\Admin\BarangModel;
 use App\Models\Admin\WebModel;
 use App\Models\Admin\SatuanModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use PDF;
+use Excel;
 
 class LapStokBarangController extends Controller
 {
@@ -47,6 +49,25 @@ class LapStokBarangController extends Controller
         } else {
             return $pdf->download('lap-stok-semua-tanggal.pdf');
         }
+    }
+
+    public function excel(Request $request)
+    {
+        $from_date = null;
+        $to_date = null;
+
+        if ($request->filled(['tglawal', 'tglakhir'])) {
+        $from_date = $request->tglawal;
+        $to_date = $request->tglakhir;
+    }
+
+        if (is_null($from_date) || is_null($to_date)) {
+            $fileName = 'lap-stok-' . date('Y-m-d') . '.xlsx';
+        } else {
+            $fileName = 'lap-stok-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx';
+        }
+
+        return Excel::download(new BarangStokExport($from_date, $to_date), $fileName);
     }
 
     public function show(Request $request)

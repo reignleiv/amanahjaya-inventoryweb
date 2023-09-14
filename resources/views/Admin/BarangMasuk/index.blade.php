@@ -35,8 +35,10 @@
                             <thead>
                                 <th class="border-bottom-0" width="1%">No</th>
                                 <th class="border-bottom-0">Tanggal Masuk</th>
-                                <th class="border-bottom-0">No Polisi</th>
+                                <th class="border-bottom-0">Jam Masuk</th>
                                 <th class="border-bottom-0">No Surat Jalan</th>
+                                <th class="border-bottom-0">No Polisi</th>
+                                <th class="border-bottom-0">Keterangan</th>
                                 <th class="border-bottom-0">Supplier</th>
                                 <th class="border-bottom-0">Barang</th>
                                 <th class="border-bottom-0">Jumlah Masuk</th>
@@ -74,6 +76,8 @@
             $("input[name='noPolisiU']").val(data.bm_no_polisi);
             $("input[name='suratJalanU']").val(data.bm_surat_jalan);
             $("input[name='jumlahMasukActualU']").val(data.bm_jumlah_masuk_actual);
+            $("input[name='ketU']").val(data.keterangan);
+            $("input[name='jamskU']").val(data.jam_masuk);
 
             getbarangbyidU(data.barang_kode);
 
@@ -140,12 +144,20 @@
                         name: 'bm_tanggal',
                     },
                     {
+                        data: 'jam_masuk',
+                        name: 'jammsk',
+                    },
+                    {
                         data: 'bm_surat_jalan',
                         name: 'bm_surat_jalan',
                     },
                     {
                         data: 'bm_no_polisi',
                         name: 'bm_no_polisi',
+                    },
+                    {
+                        data: 'keterangan',
+                        name: 'keterangan',
                     },
                     {
                         data: 'customer',

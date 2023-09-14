@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\LapStokBarangController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MerkController;
 use App\Http\Controllers\Admin\SatuanController;
-use App\Http\Controllers\Admin\BMasukController;
 use App\Http\Controllers\Master\AksesController;
 use App\Http\Controllers\Master\AppreanceController;
 use App\Http\Controllers\Master\MenuController;

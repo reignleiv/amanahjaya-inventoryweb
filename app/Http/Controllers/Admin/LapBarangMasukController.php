@@ -60,17 +60,21 @@ class LapBarangMasukController extends Controller
     {
         $from_date = null;
         $to_date = null;
+        $bm_id = null;
 
 
         if ($request->filled(['tglawal', 'tglakhir'])) {
             $from_date = $request->tglawal;
             $to_date = $request->tglakhir;
         }
+        if ($request->filled('bm_id')) {
+            $bm_id = $request->bm_id; // Ambil ID barang dari request
+        }
 
         if (is_null($from_date) || is_null($to_date)) {
-            return Excel::download(new BarangMasukExport($from_date, $to_date), 'lap-bm-' . date('Y-m-d') . '.xlsx');
+            return Excel::download(new BarangMasukExport($from_date, $to_date, $bm_id), 'lap-bm-' . date('Y-m-d') . '.xlsx');
         } else {
-            return Excel::download(new BarangMasukExport($from_date, $to_date), 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
+            return Excel::download(new BarangMasukExport($from_date, $to_date, $bm_id), 'lap-bm-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
         }
     }
 

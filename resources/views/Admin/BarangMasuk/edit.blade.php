@@ -21,6 +21,12 @@
                             <input type="text" name="tglmasukU" class="form-control datepicker-date" placeholder="">
                         </div>
                         <div class="form-group">
+                            <label for="jamsk" class="form-label">Jam Masuk
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="time" name="jamskU" class="form-control" placeholder="" id="jamskU">
+                        </div>
+                        <div class="form-group">
                             <label for="customerU" class="form-label">Pilih Customer <span
                                     class="text-danger">*</span></label>
                             <select name="customerU" id="customerU" class="form-control">
@@ -61,6 +67,10 @@
                         <div class="form-group">
                             <label>Nama Barang</label>
                             <input type="text" class="form-control" id="nmbarangU" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <input type="text" class="form-control" name="ketU" id="keteranganU">
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -212,9 +222,12 @@
             const noPolisi = $("input[name='noPolisiU']").val();
             const suratJalan = $("input[name='suratJalanU']").val();
             const density = $("input[name='densityU']").val();
+            const keterangan = $("input[name='ketU']").val();
             const jumlahMasukActual = $("input[name='jumlahMasukActualU']").val();
+            const jamMasuk = $("input[name='jamskU']").val();
 
-            console.log(bmkode,tglmasuk,kdbarang,customer,jml,density,noPolisi,suratJalan,jumlahMasukActual);
+            console.log(bmkode, tglmasuk, kdbarang, customer, jml, density, noPolisi, suratJalan, keterangan,
+                jumlahMasukActual, keterangan, jamMasuk);
 
             $.ajax({
                 type: 'POST',
@@ -229,7 +242,9 @@
                     bm_no_polisi: noPolisi,
                     bm_surat_jalan: suratJalan,
                     bm_density: density,
-                    bm_jumlah_masuk_actual: jumlahMasukActual
+                    bm_jumlah_masuk_actual: jumlahMasukActual,
+                    keterangan: keterangan,
+                    jam_masuk: jamMasuk
                 },
                 success: function(data) {
                     swal({

@@ -29,14 +29,37 @@ class BarangKeluarExport implements FromQuery, WithHeadings, ShouldAutoSize
     }
     public function headings(): array
     {
-        return ["Id", "Kode Barang Keluar", "Kode Barang", "Tanggal Keluar", "Tujuan", "Jumlah Barang Keluar", "Density", "Nomor Polisi", "Nomor Surat Jalan", "Jumlah Keluar Actual"];
+        return ["Id", "Kode Barang Keluar", "Nama Barang", "Tanggal Keluar", "Jumlah Barang Keluar", "Density", "Jumlah Keluar Actual"];
     }
     public function query()
     {
         if (is_null($this->tglawal) || is_null($this->tglakhir)) {
-            return BarangkeluarModel::query();
+            return BarangkeluarModel::query()->select(
+                'tbl_barangkeluar.bk_id',
+                'tbl_barangkeluar.barang_kode',
+                'tbl_barang.barang_nama',
+                'tbl_barangkeluar.bk_tanggal',
+                'tbl_barangkeluar.bk_jumlah',
+                'tbl_barangkeluar.bk_density',
+                'tbl_barangkeluar.bk_jumlah_keluar_actual'
+            )
+            ->leftjoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode');
         } else {
-            return BarangkeluarModel::query()->whereBetween('bk_tanggal', [$this->tglawal, $this->tglakhir]);
+            return BarangkeluarModel::query()->select(
+                'tbl_barangkeluar.bk_id',
+                'tbl_barangkeluar.barang_kode',
+                'tbl_barang.barang_nama', 
+                'tbl_barangkeluar.bk_tanggal',
+                'tbl_barangkeluar.bk_jumlah',
+                'tbl_barangkeluar.bk_density',
+                'tbl_barangkeluar.bk_jumlah_masuk_actual'
+            )
+            ->whereBetween('bk_tanggal', [$this->tglawal, $this->tglakhir])->leftjoin('tbl_barang', 'tbl_barang.barang_kode', 
+            '=', 'tbl_barangkeluar.barang_kode');
+            
+            if (!is_null($this->bk_id)) {
+                $query->where('tbl_barangkeluar.barang_kode', $this->bk_id);
+            }
         }
     }
 }

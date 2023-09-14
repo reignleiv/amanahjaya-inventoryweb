@@ -46,6 +46,8 @@
                                 Print</button>
                             <button class="btn btn-danger-light" onclick="pdf()"><i class="fa fa-file-pdf-o"></i>
                                 PDF</button>
+                            <button class="btn btn-success-light" onclick="excel()"><i class="fa fa-file-excel-o"></i>
+                                Excel</button>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -56,7 +58,7 @@
                                 <th class="border-bottom-0">Kode Barang</th>
                                 <th class="border-bottom-0">Barang</th>
                                 <th class="border-bottom-0">Stok Awal/Stok Fisik</th>
-                                <th class="border-bottom-0">Material Masuk</th>
+                                <th class="border-bottom-0 ">Material Masuk</th>
                                 <th class="border-bottom-0">Material Keluar</th>
                                 <th class="border-bottom-0">Balance/Stok Buku</th>
                                 <th class="border-bottom-0">Loss/Gain</th>
@@ -188,6 +190,40 @@
                 "{{ route('lap-sb.pdf') }}?tglawal=" + tglawal + "&tglakhir=" + tglakhir,
                 '_blank'
             );
+
+        }
+
+        function excel() {
+            var tglawal = $('input[name="tglawal"]').val();
+            var tglakhir = $('input[name="tglakhir"]').val();
+            if (tglawal != '' && tglakhir != '') {
+                window.open(
+                    "{{ route('lap-sb.xlsx') }}?tglawal=" + tglawal + "&tglakhir=" + tglakhir,
+                    '_blank'
+                );
+            } else {
+                swal({
+                    title: "Yakin export Excel Semua Data?",
+                    type: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                    confirmButtonText: "Yakin",
+                    cancelButtonText: 'Batal',
+                    showCancelButton: true,
+                    showConfirmButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonColor: '#09ad95',
+                }, function(value) {
+                    if (value == true) {
+                        window.open(
+                            "{{ route('lap-sb.xlsx') }}",
+                            '_blank'
+                        );
+                        swal.close();
+                    }
+                });
+
+            }
 
         }
 

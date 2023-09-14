@@ -55,20 +55,15 @@ class BarangkeluarController extends Controller
 
                     return $bk_density;
                 })
-                ->addColumn('bk_no_polisi', function ($row) {
-                    $bk_no_polisi = $row->bk_no_polisi == '' ? '-' : $row->bk_no_polisi;
-
-                    return $bk_no_polisi;
-                })
-                ->addColumn('bk_surat_jalan', function ($row) {
-                    $bk_surat_jalan = $row->bk_surat_jalan == '' ? '-' : $row->bk_surat_jalan;
-
-                    return $bk_surat_jalan;
-                })
                 ->addColumn('bk_jumlah_keluar_actual', function ($row) {
                     $bk_jumlah_keluar_actual = $row->bk_jumlah_keluar_actual == '' ? '-' : $row->bk_jumlah_keluar_actual;
 
                     return $bk_jumlah_keluar_actual;
+                })
+                ->addColumn('keterangan', function ($row) {
+                    $keterangan = $row->keterangan == '' ? '-' : $row->keterangan;
+
+                    return $keterangan;
                 })
                 ->addColumn('action', function ($row) {
                     $array = array(
@@ -79,8 +74,6 @@ class BarangkeluarController extends Controller
                         "bk_tujuan" => trim(preg_replace('/[^A-Za-z0-9-]+/', '_', $row->bk_tujuan)),
                         "bk_jumlah" => $row->bk_jumlah,
                         "bk_density" => $row->bk_density,
-                        "bk_no_polisi" => $row->bk_no_polisi,
-                        "bk_surat_jalan" => $row->bk_surat_jalan,
                         "bk_jumlah_keluar_actual" => $row->bk_jumlah_keluar_actual,
                     );
                     $button = '';
@@ -110,7 +103,7 @@ class BarangkeluarController extends Controller
                     }
                     return $button;
                 })
-                ->rawColumns(['action', 'tgl', 'tujuan', 'barang', 'satuan',  'bk_density', 'bk_no_polisi', 'bk_surat_jalan', 'bk_jumlah_keluar_actual'])->make(true);
+                ->rawColumns(['action', 'tgl', 'tujuan', 'barang', 'satuan',  'bk_density', 'bk_jumlah_keluar_actual'])->make(true);
         }
     }
 
@@ -125,9 +118,8 @@ class BarangkeluarController extends Controller
             'bk_tujuan'   => $request->tujuan,
             'bk_jumlah'   => $request->jml,
             'bk_density' => $request->density,
-            'bk_no_polisi' => $request->noPolisi,
-            'bk_surat_jalan' => $request->suratJalan,
-            'bk_jumlah_keluar_actual' => $request->jumlahKeluarActual
+            'bk_jumlah_keluar_actual' => $request->jumlahKeluarActual,
+            'keterangan' => $request->keterangan
         ]);
 
         return response()->json(['success' => 'Berhasil']);
@@ -143,9 +135,8 @@ class BarangkeluarController extends Controller
             'bk_tujuan'   => $request->tujuan,
             'bk_jumlah'   => $request->jml,
             "bk_density" => $request->density,
-            "bk_no_polisi" => $request->noPolisi,
-            "bk_surat_jalan" => $request->suratJalan,
             "bk_jumlah_masuk_actual" => $request->jumlahKeluarActual,
+            'keterangan' => $request->keterangan
         ]);
 
         return response()->json(['success' => 'Berhasil']);

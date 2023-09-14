@@ -70,6 +70,16 @@ class BarangmasukController extends Controller
 
                     return $bm_jumlah_masuk_actual;
                 })
+                ->addColumn('keterangan', function ($row) {
+                    $keterangan = $row->keterangan == '' ? '-' : $row->keterangan;
+
+                    return $keterangan;
+                })
+                ->addColumn('jam_masuk', function ($row) {
+                    $jam_masuk = $row->jam_masuk == '' ? '-' : $row->jam_masuk;
+
+                    return $jam_masuk;
+                })
                 ->addColumn('action', function ($row) {
                     $array = array(
                         "bm_id" => $row->bm_id,
@@ -82,7 +92,8 @@ class BarangmasukController extends Controller
                         "bm_no_polisi" => $row->bm_no_polisi,
                         "bm_surat_jalan" => $row->bm_surat_jalan,
                         "bm_jumlah_masuk_actual" => $row->bm_jumlah_masuk_actual,
-
+                        "keterangan" => $row->keterangan,
+                        "jam_masuk" => $row->jam_masuk
                     );
                     $button = '';
                     $hakEdit = AksesModel::leftJoin('tbl_submenu', 'tbl_submenu.submenu_id', '=', 'tbl_akses.submenu_id')->where(array('tbl_akses.role_id' => Session::get('user')->role_id, 'tbl_submenu.submenu_judul' => 'Barang Masuk', 'tbl_akses.akses_type' => 'update'))->count();
@@ -121,6 +132,7 @@ class BarangmasukController extends Controller
         //insert data
         BarangmasukModel::create([
             'bm_tanggal' => $request->tglmasuk,
+            'jam_masuk'=> $request->jam_masuk,
             'bm_kode' => $request->bmkode,
             'barang_kode' => $request->barang,
             'customer_id'   => $request->customer,
@@ -128,7 +140,8 @@ class BarangmasukController extends Controller
             'bm_density' => $request->density,
             'bm_no_polisi' => $request->noPolisi,
             'bm_surat_jalan' => $request->suratJalan,
-            'bm_jumlah_masuk_actual' => $request->jumlahMasuk
+            'bm_jumlah_masuk_actual' => $request->jumlahMasuk,
+            'keterangan' => $request->keterangan
         ]);
 
         return response()->json(['success' => 'Berhasil']);
@@ -147,6 +160,8 @@ class BarangmasukController extends Controller
             "bm_no_polisi" => $request->bm_no_polisi,
             "bm_surat_jalan" => $request->bm_surat_jalan,
             "bm_jumlah_masuk_actual" => $request->bm_jumlah_masuk_actual,
+            "keterangan" => $request->keterangan,
+            "jam_masuk" => $request->jam_masuk
         ]);
 
         return response()->json(['success' => 'Berhasil']);

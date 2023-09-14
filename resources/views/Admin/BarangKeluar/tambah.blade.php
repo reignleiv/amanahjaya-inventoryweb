@@ -48,6 +48,10 @@
                             <label>Nama Barang</label>
                             <input type="text" class="form-control" id="nmbarang" readonly>
                         </div>
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="ket">
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -187,6 +191,7 @@
         const density = +$("input[name='density']").val();
         const noPolisi = $("input[name='noPolisi']").val();
         const suratJalan = $("input[name='suratJalan']").val();
+        const keteragan = $("input[name='ket']").val();
         const jumlahKeluarActual = parseFloat($("input[name='jumlahKeluarActual']").val());
 
         $.ajax({
@@ -202,7 +207,8 @@
                 density: density,
                 noPolisi: noPolisi,
                 suratJalan: suratJalan,
-                jumlahKeluarActual: jumlahKeluarActual
+                jumlahKeluarActual: jumlahKeluarActual,
+                keterangan: keteragan
             },
             success: function(data) {
                 $('#modaldemo8').modal('toggle');

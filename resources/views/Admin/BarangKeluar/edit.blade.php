@@ -50,6 +50,10 @@
                             <label>Nama Barang</label>
                             <input type="text" class="form-control" id="nmbarangU" readonly>
                         </div>
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="ketU">
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -197,6 +201,7 @@
         const noPolisi = $("input[name='noPolisiU']").val();
         const suratJalan = $("input[name='suratJalanU']").val();
         const jumlahKeluarActual = parseFloat($("input[name='jumlahKeluarActualU']").val());
+        const keterangan = $("input[name='ketU']").val();
 
         $.ajax({
             type: 'POST',
@@ -211,7 +216,8 @@
                 density: density,
                 noPolisi: noPolisi,
                 suratJalan: suratJalan,
-                jumlahKeluarActual: jumlahKeluarActual
+                jumlahKeluarActual: jumlahKeluarActual,
+                keterangan: keterangan
             },
             success: function(data) {
                 swal({

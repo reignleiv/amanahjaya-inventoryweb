@@ -70,7 +70,7 @@
                          </div>
                          <div class="form-group">
                              <label>Keterangan</label>
-                             <input type="text" class="form-control" id="keterangan">
+                             <input type="text" class="form-control" name="ket" id="keterangan">
                          </div>
                          <div class="row">
                              <div class="col-md-6">
@@ -181,7 +181,7 @@
              const status = $("#status").val();
              const customer = $("select[name='customer']").val();
              const jml = $("input[name='jml']").val();
-             setLoading(true);
+             setLoading(true); 
              resetValid();
 
              if (tglmasuk == "") {
@@ -219,10 +219,12 @@
              const density = +$("input[name='density']").val();
              const noPolisi = $("input[name='noPolisi']").val();
              const suratJalan = $("input[name='suratJalan']").val();
+             const keterangan = $("input[name='ket']").val();
              const jumlahMasukActual = parseFloat($("input[name='jumlahMasukActual']").val());
+             const jamMasuk = $("input[name='jamsk']").val();
 
              console.log(bmkode, tglmasuk, kdbarang, customer, jumlahMasuk, density, noPolisi, suratJalan,
-                 jumlahMasukActual);
+                 jumlahMasukActual, jamMasuk);
 
              $.ajax({
                  type: 'POST',
@@ -237,7 +239,9 @@
                      density: density,
                      noPolisi: noPolisi,
                      suratJalan: suratJalan,
-                     jumlahMasuk: jumlahMasukActual
+                     jumlahMasuk: jumlahMasukActual,
+                     keterangan: keterangan,
+                     jam_masuk: jamMasuk
                  },
                  success: function(data) {
                      $('#modaldemo8').modal('toggle');

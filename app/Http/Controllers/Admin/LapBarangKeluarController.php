@@ -61,6 +61,7 @@ class LapBarangKeluarController extends Controller
     {
         $from_date = null;
         $to_date = null;
+        $bk_id = null;
 
 
         if ($request->filled(['tglawal', 'tglakhir'])) {
@@ -68,10 +69,14 @@ class LapBarangKeluarController extends Controller
             $to_date = $request->tglakhir;
         }
 
+        if ($request->filled('bk_id')) {
+            $bk_id = $request->bk_id; // Ambil ID barang dari request
+        }
+
         if (is_null($from_date) || is_null($to_date)) {
-            return Excel::download(new BarangKeluarExport($from_date, $to_date), 'lap-bk-' . date('Y-m-d') . '.xlsx');
+            return Excel::download(new BarangKeluarExport($from_date, $to_date, $bk_id), 'lap-bk-' . date('Y-m-d') . '.xlsx');
         } else {
-            return Excel::download(new BarangKeluarExport($from_date, $to_date), 'lap-bk-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
+            return Excel::download(new BarangKeluarExport($from_date, $to_date, $bk_id), 'lap-bk-' . $request->tglawal . '-' . $request->tglakhir . '.xlsx');
         }
     }
     

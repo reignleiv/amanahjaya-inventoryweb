@@ -35,8 +35,6 @@
                             <thead>
                                 <th class="border-bottom-0" width="1%">No</th>
                                 <th class="border-bottom-0">Tanggal Keluar</th>
-                                <th class="border-bottom-0">No Polisi</th>
-                                <th class="border-bottom-0">No Surat Jalan</th>
                                 <th class="border-bottom-0">Barang</th>
                                 <th class="border-bottom-0">Jumlah Keluar</th>
                                 <th class="border-bottom-0">Jumlah Keluar Actual</th>
@@ -71,9 +69,8 @@
             $("input[name='tujuanU']").val(data.bk_tujuan.replace(/_/g, ' '));
             $("input[name='jumlahKeluarU']").val(data.bk_jumlah);
             $("input[name='densityU']").val(data.bk_density);
-            $("input[name='noPolisiU']").val(data.bk_no_polisi);
-            $("input[name='suratJalanU']").val(data.bk_surat_jalan);
             $("input[name='jumlahKeluarActualU']").val(data.bk_jumlah_keluar_actual);
+            $("input[name='ketU']").val(data.keterangan);
 
             getbarangbyidU(data.barang_kode);
 
@@ -137,14 +134,6 @@
                     {
                         data: 'tgl',
                         name: 'bk_tanggal',
-                    },
-                    {
-                        data: 'bk_surat_jalan',
-                        name: 'bk_surat_jalan',
-                    },
-                    {
-                        data: 'bk_no_polisi',
-                        name: 'bk_no_polisi',
                     },
                     {
                         data: 'barang',
