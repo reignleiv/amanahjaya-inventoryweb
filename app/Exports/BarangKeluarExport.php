@@ -43,20 +43,24 @@ class BarangKeluarExport implements FromQuery, WithHeadings, ShouldAutoSize
                 'tbl_barangkeluar.bk_density',
                 'tbl_barangkeluar.bk_jumlah_keluar_actual'
             )
-            ->leftjoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode');
+                ->leftjoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode');
         } else {
             return BarangkeluarModel::query()->select(
                 'tbl_barangkeluar.bk_id',
                 'tbl_barangkeluar.barang_kode',
-                'tbl_barang.barang_nama', 
+                'tbl_barang.barang_nama',
                 'tbl_barangkeluar.bk_tanggal',
                 'tbl_barangkeluar.bk_jumlah',
                 'tbl_barangkeluar.bk_density',
-                'tbl_barangkeluar.bk_jumlah_masuk_actual'
+                'tbl_barangkeluar.bk_jumlah_keluar_actual'
             )
-            ->whereBetween('bk_tanggal', [$this->tglawal, $this->tglakhir])->leftjoin('tbl_barang', 'tbl_barang.barang_kode', 
-            '=', 'tbl_barangkeluar.barang_kode');
-            
+                ->whereBetween('bk_tanggal', [$this->tglawal, $this->tglakhir])->leftjoin(
+                    'tbl_barang',
+                    'tbl_barang.barang_kode',
+                    '=',
+                    'tbl_barangkeluar.barang_kode'
+                );
+
             if (!is_null($this->bk_id)) {
                 $query->where('tbl_barangkeluar.barang_kode', $this->bk_id);
             }
