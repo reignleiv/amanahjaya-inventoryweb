@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <?php
@@ -120,7 +120,7 @@ use Carbon\Carbon;
                         ->whereBetween('bm_tanggal', [$tglawal, $tglakhir])
                         ->sum('tbl_barangmasuk.bm_jumlah');
                 }
-                
+
                 if ($tglawal != '') {
                     $jmlkeluar = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
                         ->whereBetween('bk_tanggal', [$tglawal, $tglakhir])
@@ -131,10 +131,10 @@ use Carbon\Carbon;
                         ->where('tbl_barangkeluar.barang_kode', '=', $d->barang_kode)
                         ->sum('tbl_barangkeluar.bk_jumlah');
                 }
-                
+
                 $totalStok = $d->barang_stok + ($jmlmasuk - $jmlkeluar);
                 $lossgain = $d->barang_stok - $totalStok;
-                
+
                 ?>
                 <tr>
                     <td align="center">{{ $no++ }}</td>

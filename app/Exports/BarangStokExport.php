@@ -55,14 +55,34 @@ class BarangStokExport implements FromQuery, ShouldAutoSize, WithHeadings, WithM
     }
 
 
-    public function map($data): array {
-        $jmlkeluar = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
-            ->where('tbl_barangkeluar.barang_kode', $data->barang_kode)
-            ->sum('tbl_barangkeluar.bk_jumlah_keluar_actual');
+    public function map($data): array
+    {
+        $tglawal = $this->tglawal; // Access the property value
+        $tglakhir = $this->tglakhir;
 
-        $jmlmasuk = BarangmasukModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangmasuk.barang_kode')
-            ->where('tbl_barangmasuk.barang_kode', $data->barang_kode)
-            ->sum('tbl_barangmasuk.bm_jumlah_masuk_actual');
+        if ($tglawal == '') {
+            $jmlmasuk = BarangmasukModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangmasuk.barang_kode')
+                ->leftJoin('tbl_supplier', 'tbl_supplier.customer_id', '=', 'tbl_barangmasuk.customer_id')
+                ->where('tbl_barangmasuk.barang_kode', '=', $data->barang_kode)
+                ->sum('tbl_barangmasuk.bm_jumlah');
+        } else {
+            $jmlmasuk = BarangmasukModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangmasuk.barang_kode')
+                ->leftJoin('tbl_supplier', 'tbl_supplier.customer_id', '=', 'tbl_barangmasuk.customer_id')
+                ->where('tbl_barangmasuk.barang_kode', '=', $data->barang_kode)
+                ->whereBetween('bm_tanggal', [$tglawal, $tglakhir])
+                ->sum('tbl_barangmasuk.bm_jumlah');
+        }
+
+        if ($tglawal != '') {
+            $jmlkeluar = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
+                ->whereBetween('bk_tanggal', [$tglawal, $tglakhir])
+                ->where('tbl_barangkeluar.barang_kode', '=', $data->barang_kode)
+                ->sum('tbl_barangkeluar.bk_jumlah');
+        } else {
+            $jmlkeluar = BarangkeluarModel::leftJoin('tbl_barang', 'tbl_barang.barang_kode', '=', 'tbl_barangkeluar.barang_kode')
+                ->where('tbl_barangkeluar.barang_kode', '=', $data->barang_kode)
+                ->sum('tbl_barangkeluar.bk_jumlah');
+        }
 
         $totalstok = $data->barang_stok + ($jmlmasuk - $jmlkeluar);
 
